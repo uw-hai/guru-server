@@ -1,4 +1,5 @@
 import os
+import logging
 import cPickle as pickle
 from .worker import celery_app
 from .schema import Policy as PolicyDB
@@ -61,6 +62,11 @@ def train_policy(policy_id):
 
     ensure_dir(MODELS_DIR)
     ensure_dir(POLICIES_DIR)
+
+    if os.path.exists(MODELS_DIR) and os.path.exists(POLICIES_DIR):
+        logging.info('Dirs exist!')
+    else:
+        logging.warn("Dirs don't exist!")
     pomdp_fpath = os.path.join(MODELS_DIR, '{}.pomdp'.format(policy_id))
     policy_fpath = os.path.join(POLICIES_DIR, '{}.policy'.format(policy_id))
 

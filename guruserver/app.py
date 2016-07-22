@@ -7,7 +7,7 @@ app = Flask(__name__)
 app.config.from_object(os.environ['APP_SETTINGS'])
 db = MongoEngine(app)
 
-TMP_DIR = os.environ.get('TMP_DIR', '/tmp/guruserver')
+TMP_DIR = os.environ.get('TMP_DIR', os.path.join('/tmp', 'guruserver'))
 
 from .api import api
 
