@@ -2,13 +2,15 @@ import os
 import cPickle as pickle
 from .worker import celery_app
 from .schema import Policy as PolicyDB
+from .guru.research_utils.util import ensure_dir
 from .guru.policy import Policy
 from .guru.param import Params
 from .guru.history import History
 from .guru.work_learn_problem import Action
-from .app import MODELS_DIR
-from .app import POLICIES_DIR
+from .app import TMP_DIR
 
+MODELS_DIR = os.path.join(TMP_DIR, 'models')
+POLICIES_DIR = os.path.join(TMP_DIR, 'policies')
 N_RANDOM_RESTARTS = 10
 
 
@@ -57,6 +59,8 @@ def train_policy(policy_id):
                     params_gt=params.get_param_dict(sample=False),
                     **policy_dict)
 
+    ensure_dir(MODELS_DIR)
+    ensure_dir(POLICIES_DIR)
     pomdp_fpath = os.path.join(MODELS_DIR, '{}.pomdp'.format(policy_id))
     policy_fpath = os.path.join(POLICIES_DIR, '{}.policy'.format(policy_id))
 
