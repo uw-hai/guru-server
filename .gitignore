@@ -1,0 +1,4 @@
+*.pyc
+.condaauto
+.env
+.env_*

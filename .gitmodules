@@ -1,0 +1,3 @@
+[submodule "guruserver/guru"]
+	path = guruserver/guru
+	url = https://github.com/uwcrowdlab/guru.git

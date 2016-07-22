@@ -1,0 +1,15 @@
+name: heroku-env  # Need this name for Heroku Conda buildpack
+# name: guru-server  # Uncomment for local env name.
+dependencies:
+- python=2.7
+- flask=0.11.*
+- gunicorn=19.1.*
+- numpy=1.11.*
+- scipy=0.17.*
+- pandas=0.18.*
+- pyyaml=3.11
+- redis-py=2.10.*
+- pip:
+  - Flask-RESTful==0.3.5
+  - flask-mongoengine==0.7.5
+  - celery==3.1.23
