@@ -21,7 +21,7 @@ class Policy(Resource):
             policy = PolicyDB.objects.get_or_404(id=args['policy_id'])
             return {'policy': policy.pomdp_policy,
                     'config': policy.config,
-                    'history': policy.history}
+                    'histories': policy.histories}
 
     def post(self, **args):
         """Train policy or make prediction.
@@ -51,10 +51,12 @@ class Policy(Resource):
         json_args = request.get_json()
         if 'policy_id' not in args:
             # Train new policy.
-            history = json_args.get('histories', None)
+            if 'config' not in json_args:
+                abort(400, message='Please provide config')
+            histories = json_args.get('histories', None)
             estimate = json_args.get('estimate', True)
             policy = PolicyDB(config=json_args['config'],
-                              history=history).save()
+                              histories=histories).save()
             policy_id = str(policy.id)
             train_policy(policy_id=policy_id)
             return {'id': policy_id}

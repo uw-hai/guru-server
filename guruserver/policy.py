@@ -63,8 +63,8 @@ def train_policy(policy_id):
     # TODO(jbragg): Don't use these defaults.
     # TODO(jbragg): Look into loading history as in guru.simulator -> guru.pomdp.main()
     # Also note utility.models.teach_history.TeachHistory.add_to_phistory().
-    if policy_doc.history is not None:
-        history = load_history(histories=policy_doc.history, policy=policy)
+    if policy_doc.histories is not None:
+        history = load_history(histories=policy_doc.histories, policy=policy)
     else:
         history = History()
     budget_spent = policy_doc.config.get('budget_spent', None)
