@@ -44,6 +44,7 @@ class Policy(Resource):
             mode (str): Can be 'rl' or 'exploit'.
             budget_spent (Optional[float]): Budget spent.
             budget_explore (Optional[float]): Budget explore.
+            previous_workers (Optional[int]): Number of previous workers.
 
         TODO(jbragg): Consider moving mode, budget_spent, and budget_explore to /policies endpoint only.
 
@@ -65,13 +66,15 @@ class Policy(Resource):
             mode = json_args.get('mode', None)
             budget_spent = json_args.get('budget_spent', None)
             budget_explore = json_args.get('budget_explore', None)
+            previous_workers = json_args.get('previous_workers', None)
             if mode in ['rl', 'exploit']:
                 history = json_args.get('history', [])
                 action, explore_p = predict_policy(
                     policy_id=args['policy_id'], history=history,
                     exploit=(mode == 'exploit'),
                     budget_spent=budget_spent,
-                    budget_explore=budget_explore)
+                    budget_explore=budget_explore,
+                    previous_workers=previous_workers)
                 return {'action': action,
                         'explore': explore_p}
             else:

@@ -104,7 +104,8 @@ def train_policy(policy_id):
 
 
 def predict_policy(policy_id, history=None, exploit=False,
-                   budget_spent=None, budget_explore=None):
+                   budget_spent=None, budget_explore=None,
+                   previous_workers=None):
     """Use policy to recommend next action.
 
     Args:
@@ -115,6 +116,7 @@ def predict_policy(policy_id, history=None, exploit=False,
             Will exploit if not provided.
         budget_explore (Optional[float]): Budget allowed for exploring.
             Will exploit if not provided.
+        previous_workers (Optional[int]): Number of previous workers.
 
     Returns:
         dict: Dictionary describing action.
@@ -137,6 +139,11 @@ def predict_policy(policy_id, history=None, exploit=False,
             history=policy_history, belief=belief)
         explore = False
     else:
+        policy.set_use_explore_policy(
+            worker_n=previous_workers,
+            budget_spent=budget_spent,
+            budget_explore=budget_explore,
+            t=policy_history.n_t(0))
         action_index, explore = policy.get_next_action(
             history=policy_history, belief=belief,
             budget_spent=budget_spent, budget_explore=budget_explore)
