@@ -6,6 +6,8 @@ import logging
 class Config(object):
     MONGODB_HOST = os.environ['MONGODB_URL']
     LOGSTREAM = sys.stdout
+    CELERY_BROKER_URL = os.environ['REDIS_URL']
+    CELERY_BACKEND = os.environ['REDIS_URL']
 
 class DevelopmentConfig(Config):
     DEBUG = True

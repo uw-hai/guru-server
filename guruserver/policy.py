@@ -1,6 +1,5 @@
 import os
 import cPickle as pickle
-from .worker import celery_app
 from .schema import Policy as PolicyDB
 from .guru.research_utils.util import ensure_dir
 from .guru.policy import Policy
@@ -8,6 +7,7 @@ from .guru.param import Params
 from .guru.history import History
 from .guru.work_learn_problem import Action
 from .app import TMP_DIR
+from .app import celery
 
 MODELS_DIR = os.path.join(TMP_DIR, 'models')
 POLICIES_DIR = os.path.join(TMP_DIR, 'policies')
@@ -38,11 +38,12 @@ def load_history(histories, policy):
     return history_obj
 
 
-@celery_app.task
+@celery.task
 def train_policy(policy_id):
     """Train a policy.
 
     Assumes all actions in history have an observation.
+    Will always solve a policy so that exploitation is possible.
 
     Args:
         policy_id (str): Policy ID.
@@ -110,7 +111,7 @@ def predict_policy(policy_id, history=None, exploit=False,
 
     Args:
         policy_id (str): Policy ID.
-        history (list): TODO.
+        history (list): Worker history.
         exploit (bool): Force exploitation.
         budget_spent (Optional[float]): Budget spent thus far.
             Will exploit if not provided.

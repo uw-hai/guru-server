@@ -59,7 +59,7 @@ class Policy(Resource):
             policy = PolicyDB(config=json_args['config'],
                               histories=histories).save()
             policy_id = str(policy.id)
-            train_policy(policy_id=policy_id)
+            train_policy.delay(policy_id=policy_id)
             return {'id': policy_id}
         else:
             # Do something with existing policy.
